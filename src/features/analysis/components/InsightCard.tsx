@@ -6,7 +6,7 @@ interface InsightCardProps {
     userName?: string;
 }
 
-export function InsightCard({ summary, userName = 'Climber' }: InsightCardProps) {
+export function InsightCard({ summary, userName = '使用者' }: InsightCardProps) {
     const feedback = translateToFeedback(summary, userName);
     const isHighRisk = summary.overallRisk === 'high';
     const isMedRisk = summary.overallRisk === 'medium';
@@ -28,7 +28,7 @@ export function InsightCard({ summary, userName = 'Climber' }: InsightCardProps)
                     {isHighRisk ? '🧡' : isMedRisk ? '✨' : '🌿'}
                 </div>
                 <h3 style={{ fontSize: '1.1rem', color: 'var(--color-text-primary)' }}>
-                    {isHighRisk ? 'High Load Detected' : isMedRisk ? 'Check-in Needed' : 'Smooth Flow'}
+                    {isHighRisk ? '检测到高负荷' : isMedRisk ? '需要留意' : '动作流畅'}
                 </h3>
             </div>
 

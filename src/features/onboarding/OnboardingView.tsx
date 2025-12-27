@@ -1,21 +1,13 @@
 import { useState } from 'react';
 import { useUser } from './UserContext';
-import type { TrainingLevel } from './UserContext';
 
 export function OnboardingView({ onComplete }: { onComplete: () => void }) {
     const { updateProfile, completeOnboarding } = useUser();
     const [step, setStep] = useState(0);
     const [height, setHeight] = useState(165);
-    const [level, setLevel] = useState<TrainingLevel>('beginner');
-
-    // Steps: 
-    // 0. Intro
-    // 1. Height (Leverage)
-    // 2. Experience (Context)
-    // 3. Ready
 
     const handleFinish = () => {
-        updateProfile({ heightCm: height, trainingLevel: level });
+        updateProfile({ heightCm: height });
         completeOnboarding();
         onComplete();
     };
@@ -50,28 +42,30 @@ export function OnboardingView({ onComplete }: { onComplete: () => void }) {
         outline: 'none',
     };
 
+    // 步骤 0: 欢迎
     if (step === 0) {
         return (
             <div style={containerStyle}>
                 <div style={{ fontSize: '3rem' }}>🌿</div>
-                <h1>Welcome to Shecover</h1>
+                <h1>欢迎使用 Shecover</h1>
                 <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.1rem' }}>
-                    We help you understand your body's unique movement language.
+                    帮助你理解身体的独特运动语言。
                     <br /><br />
-                    Let's align the analysis to your structure.
+                    让我们根据你的身体结构调整分析。
                 </p>
                 <button style={buttonStyle} onClick={() => setStep(1)}>
-                    Start Setup
+                    开始设置
                 </button>
             </div>
         );
     }
 
+    // 步骤 1: 身高
     if (step === 1) {
         return (
             <div style={containerStyle}>
-                <h2>Your Structure</h2>
-                <p>Height helps us calculate your leverage and angles more accurately.</p>
+                <h2>你的身体结构</h2>
+                <p>身高帮助我们更准确地计算你的杠杆和角度。</p>
 
                 <div style={{ margin: '32px 0' }}>
                     <input
@@ -80,49 +74,11 @@ export function OnboardingView({ onComplete }: { onComplete: () => void }) {
                         onChange={(e) => setHeight(Number(e.target.value))}
                         style={inputStyle}
                     />
-                    <div style={{ marginTop: '8px', color: 'var(--color-text-secondary)' }}>cm</div>
-                </div>
-
-                <button style={buttonStyle} onClick={() => setStep(2)}>
-                    Next
-                </button>
-            </div>
-        );
-    }
-
-    if (step === 2) {
-        return (
-            <div style={containerStyle}>
-                <h2>Your Journey</h2>
-                <p>How long have you been climbing? This helps us tailor the feedback.</p>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '24px' }}>
-                    {[
-                        { id: 'beginner', label: 'Just starting', desc: '< 1 year' },
-                        { id: 'intermediate', label: 'Regular Climber', desc: '1-3 years' },
-                        { id: 'advanced', label: 'Experienced', desc: '3+ years' }
-                    ].map((opt) => (
-                        <button
-                            key={opt.id}
-                            onClick={() => setLevel(opt.id as TrainingLevel)}
-                            style={{
-                                ...buttonStyle,
-                                background: level === opt.id ? 'var(--color-primary-dark)' : 'white',
-                                color: level === opt.id ? 'white' : 'var(--color-text-primary)',
-                                border: level === opt.id ? 'none' : '2px solid rgba(0,0,0,0.05)',
-                                textAlign: 'left',
-                                padding: '20px',
-                                marginTop: 0
-                            }}
-                        >
-                            <div style={{ fontWeight: 600 }}>{opt.label}</div>
-                            <div style={{ fontSize: '0.85rem', opacity: 0.8 }}>{opt.desc}</div>
-                        </button>
-                    ))}
+                    <div style={{ marginTop: '8px', color: 'var(--color-text-secondary)' }}>厘米</div>
                 </div>
 
                 <button style={buttonStyle} onClick={handleFinish}>
-                    Complete
+                    完成
                 </button>
             </div>
         );
